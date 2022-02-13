@@ -1,36 +1,51 @@
-import { useCallback, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { HeroModel, HeroStoreType, useHeroStore } from "./hooks/heroStore";
+
+import { v4 as uuidv4 } from "uuid";
+import { faker } from "@faker-js/faker";
+
+import { useHeroStore } from "./hooks/heroStore";
 import ComponentA from "./components/ComponentA";
-import { useVillainStore, VillainStoreType } from "./hooks/villainStore";
+import { useVillainStore } from "./hooks/villainStore";
 
 function App() {
-  // best practice
-  // const heroes = useStore((state: StoreType) => state.heroes);
-  // const addNewHero = useStore((state: StoreType) => state.addNewHero);
-  const { addNewHero, heroes }: HeroStoreType = useHeroStore();
-  const { villains, addNewVillain }: VillainStoreType = useVillainStore();
+  const heroes = useHeroStore((state) => state.heroes);
+  const addNewHero = useHeroStore((state) => state.addNewHero);
+  const cleanHeroes = useHeroStore((state) => state.cleanHeroes);
+  const villains = useVillainStore((state) => state.villains);
+  const addNewVillains = useVillainStore((state) => state.addNewVillain);
 
   return (
     <div className="App">
       <div>
-        {/* hero was HeroModel, but became type 'any' after adding zustand persist */}
-        {heroes.map((hero, i) => (
-          <div key={hero.id + `${i}`}>{hero.firstName}</div>
+        {heroes.map((hero) => (
+          <div key={hero.id}>{hero.firstName}</div>
+        ))}
+      </div>
+      <div>
+        {villains?.map((v) => (
+          <div key={v.id}>{v.firstName}</div>
         ))}
       </div>
       <div>
         <button
           onClick={() => {
             addNewHero({
-              id: "218r9ytgwuyfo",
-              firstName: "New Hero",
-              lastName: "New Hero",
+              id: uuidv4(),
+              firstName: faker.name.firstName(),
+              lastName: faker.name.lastName(),
             });
           }}
         >
           ADD HERO
+        </button>
+      </div>
+      <div>
+        <button
+          onClick={() => {
+            cleanHeroes();
+          }}
+        >
+          CLEAN
         </button>
       </div>
       <ComponentA />

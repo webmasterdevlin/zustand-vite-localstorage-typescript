@@ -19,12 +19,12 @@ export type VillainStoreType = {
   addNewVillain: (villain: VillainModel) => void;
 };
 
-export const useVillainStore = create(
+export const useVillainStore = create<VillainStoreType>(
   persist(
     {
       key: "villainStore",
     },
-    (set: SetState<any>, get) => ({
+    (set): VillainStoreType => ({
       isLoading: false,
       villains: [] as VillainModel[],
       addNewVillain: (villain: VillainModel) =>
@@ -35,4 +35,4 @@ export const useVillainStore = create(
   )
 );
 
-mountStoreDevtool("villainStore", useVillainStore);
+mountStoreDevtool("villainStore", useVillainStore as any);

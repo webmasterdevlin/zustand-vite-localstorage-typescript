@@ -2,7 +2,7 @@ import React from "react";
 import { HeroStoreType, useHeroStore } from "../hooks/heroStore";
 
 const ComponentC = () => {
-  const heroes = useHeroStore((state: HeroStoreType) => state.heroes);
+  const heroes = useHeroStore((state) => state.heroes);
 
   return (
     <div>
