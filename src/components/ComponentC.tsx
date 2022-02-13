@@ -1,10 +1,8 @@
 import React from "react";
-import { useStore } from "../hooks/store";
+import { HeroStoreType, useHeroStore } from "../hooks/heroStore";
 
 const ComponentC = () => {
-  const { heroes, addNewHero } = useStore();
-
-  console.log("ComponentC rendered");
+  const heroes = useHeroStore((state: HeroStoreType) => state.heroes);
 
   return (
     <div>

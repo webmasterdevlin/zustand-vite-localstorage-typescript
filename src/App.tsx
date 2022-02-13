@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { HeroModel, StoreType, useStore } from "./hooks/store";
+import { HeroModel, HeroStoreType, useHeroStore } from "./hooks/heroStore";
 import ComponentA from "./components/ComponentA";
+import { useVillainStore, VillainStoreType } from "./hooks/villainStore";
 
 function App() {
-  const { heroes, addNewHero }: StoreType = useStore();
+  // best practice
+  // const heroes = useStore((state: StoreType) => state.heroes);
+  // const addNewHero = useStore((state: StoreType) => state.addNewHero);
+  const { addNewHero, heroes }: HeroStoreType = useHeroStore();
+  const { villains, addNewVillain }: VillainStoreType = useVillainStore();
+
   return (
     <div className="App">
       <div>
         {/* hero was HeroModel, but became type 'any' after adding zustand persist */}
-        {heroes.map((hero: HeroModel, i) => (
+        {heroes.map((hero, i) => (
           <div key={hero.id + `${i}`}>{hero.firstName}</div>
         ))}
       </div>

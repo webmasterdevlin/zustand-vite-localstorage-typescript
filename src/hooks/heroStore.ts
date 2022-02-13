@@ -1,5 +1,7 @@
 import create, { SetState } from "zustand";
+
 import { configurePersist } from "zustand-persist";
+import { mountStoreDevtool } from "simple-zustand-devtools";
 
 const { persist } = configurePersist({
   storage: localStorage,
@@ -11,22 +13,24 @@ export type HeroModel = {
   lastName: string;
 };
 
-export type StoreType = {
+export type HeroStoreType = {
   heroes: HeroModel[];
   isLoading: boolean;
   addNewHero: (hero: HeroModel) => void;
 };
 
-export const useStore = create(
+export const useHeroStore = create(
   persist(
     {
-      key: "root",
+      key: "heroStore",
     },
     (set: SetState<any>, get) => ({
       isLoading: false,
       heroes: [] as HeroModel[],
       addNewHero: (hero: HeroModel) =>
-        set((state: StoreType) => ({ heroes: [...state.heroes, hero] })),
+        set((state: HeroStoreType) => ({ heroes: [...state.heroes, hero] })),
     })
   )
 );
+
+mountStoreDevtool("heroStore", useHeroStore);
