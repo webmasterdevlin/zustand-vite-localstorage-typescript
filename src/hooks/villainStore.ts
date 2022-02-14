@@ -1,7 +1,9 @@
-import create, { SetState } from "zustand";
+import create from "zustand";
 
 import { configurePersist } from "zustand-persist";
 import { mountStoreDevtool } from "simple-zustand-devtools";
+import produce, { Draft } from "immer";
+import { WritableDraft } from "immer/dist/types/types-external";
 
 const { persist } = configurePersist({
   storage: localStorage,
@@ -26,11 +28,13 @@ export const useVillainStore = create<VillainStoreType>(
     },
     (set): VillainStoreType => ({
       isLoading: false,
-      villains: [] as VillainModel[],
+      villains: [],
       addNewVillain: (villain: VillainModel) =>
-        set((state: VillainStoreType) => ({
-          villains: [...state.villains, villain],
-        })),
+        set(
+          produce((draft: Draft<VillainStoreType>) => {
+            draft.villains.push(villain);
+          })
+        ),
     })
   )
 );

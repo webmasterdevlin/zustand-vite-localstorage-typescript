@@ -1,5 +1,5 @@
-import create, { SetState } from "zustand";
-
+import create from "zustand";
+import produce, { Draft } from "immer";
 import { configurePersist } from "zustand-persist";
 import { mountStoreDevtool } from "simple-zustand-devtools";
 
@@ -27,16 +27,22 @@ export const useHeroStore = create<HeroStoreType>(
     },
     (set): HeroStoreType => ({
       isLoading: false,
-      heroes: [] as HeroModel[],
+      heroes: [],
       addNewHero: (hero: HeroModel) =>
-        set((state: HeroStoreType) => ({ heroes: [...state.heroes, hero] })),
+        set(
+          produce((draft: Draft<HeroStoreType>) => {
+            draft.heroes.push(hero);
+          })
+        ),
       cleanHeroes: () =>
-        set(() => {
-          purge()
-            .then()
-            .catch((e) => console.log(e));
-          return { heroes: [] };
-        }),
+        set(
+          produce((draft: Draft<HeroStoreType>) => {
+            purge()
+              .then()
+              .catch((e) => console.log(e));
+            draft.heroes = [];
+          })
+        ),
     })
   )
 );

@@ -17,8 +17,8 @@ function App() {
   return (
     <div className="App">
       <div>
-        {heroes.map((hero) => (
-          <div key={hero.id}>{hero.firstName}</div>
+        {heroes.map((h) => (
+          <div key={h.id}>{h.firstName}</div>
         ))}
       </div>
       <div>
