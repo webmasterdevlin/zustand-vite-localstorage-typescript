@@ -16,6 +16,8 @@ function App() {
 
   return (
     <div className="App">
+      <h1>{import.meta.env.VITE_APP_TITLE}</h1>
+      <h2>is DEV? {import.meta.env.DEV.toString()}</h2>
       <div>
         {heroes.map((h) => (
           <div key={h.id}>{h.firstName}</div>
